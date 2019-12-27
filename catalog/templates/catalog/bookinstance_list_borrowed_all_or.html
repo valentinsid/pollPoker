@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Results</h1>
+
+    {% if choice_list %}
+    <ul>
+
+      {% for choice in choice_list %} 
+      <p> {{ choice.choice_text }}</p>
+      <p> {{ choice.votes }}</p>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>There are no books borrowed.</p>
+    {% endif %}       
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load staticfiles %}
+{% load mathfilters %}
+<h1>Card: {{ author }} - {{ author.bb }} </h1>
+<img src="{% static 'images/'%}{{author.first_name}}.jpg" alt="Smiley face" height="300" width="200">
+<img src="{% static 'images/'%}{{author.last_name}}.jpg" alt="Smiley face" height="300" width="200">
+<p>{{author.date_of_birth}} - {% if author.date_of_death %}{{author.date_of_death}}{% endif %}</p>
+
+<div style="margin-left:20px;margin-top:20px">
+<form action="{% url 'catalog:author-detail' author.id %}" method="post">
+{% csrf_token %} 
+  {% for choice in choice_list %}
+  {% if choice.choice_text == "MIN" %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }} - {{ author.bb | mul:2 }}</label><br>
+  {% elif choice.choice_text == "3BET" %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }} - {{ author.bb | mul:3 }}</label><br>
+  {% else %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+
+  {% endif %}  
+{% endfor %}
+
+<input type="submit" value="Vote">
+</form>
+
+{% if user.is_staff %}
+<form action="{% url 'catalog:author_delete' author.id %}" method="post">
+{% csrf_token %} 
+<input type="submit" value="Delete">
+</form>
+{% endif %}
+
+<dl>
+{% for book in author.book_set.all %}
+  <dt><a href="{% url 'book-detail' book.pk %}">{{book}}</a> ({{book.bookinstance_set.all.count}})</dt>
+  <dd>{{book.summary}}</dd>
+{% endfor %}
+</dl>
+
+</div>
+{% endblock %}
