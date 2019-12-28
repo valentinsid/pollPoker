@@ -4,8 +4,8 @@
 {% load staticfiles %}
 {% load mathfilters %}
 <h1>Card: {{ author }} - {{ author.bb }} </h1>
-<img src="{% static 'images/'%}{{author.first_name}}.jpg" alt="Smiley face" height="300" width="200">
-<img src="{% static 'images/'%}{{author.last_name}}.jpg" alt="Smiley face" height="300" width="200">
+<img src="{% static 'images/'%}{{author.first_card}}.jpg" alt="Smiley face" height="300" width="200">
+<img src="{% static 'images/'%}{{author.second_card}}.jpg" alt="Smiley face" height="300" width="200">
 <p>{{author.date_of_birth}} - {% if author.date_of_death %}{{author.date_of_death}}{% endif %}</p>
 
 <div style="margin-left:20px;margin-top:20px">

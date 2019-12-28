@@ -1,9 +1,10 @@
 from django.shortcuts import render
 import json
 # Create your views here.
-
+from django.db.models import F
 from .models import Book, Author, BookInstance, Genre, Option
-
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
+from django.contrib.auth.models import User
 
 def index(request):
     """View function for home page of site."""
@@ -51,6 +52,7 @@ class AuthorListView(generic.ListView):
 class AuthorDetailView(generic.DetailView):
     """Generic class-based detail view for an author."""
     model = Author
+
     obj = model.objects.first()
     field_name = 'id'
     try:
@@ -96,6 +98,8 @@ class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
     template_name = 'catalog/bookinstance_list_borrowed_all.html'
     paginate_by = 10
     model = Author
+    
+
     def get_context_data(self, **kwargs):
         context = super(LoanedBooksAllListView, self).get_context_data(**kwargs)
         new_list=list(Option.objects.all())
@@ -109,13 +113,23 @@ class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
 
         for i in k1:
             k11.append([str(i[0]),str(i[1])])  
-
-        print(k11)    
-#
-        context.update({
+        objectt=Author.objects.all()   
+        print(k11)
+        if objectt.count() == 2:
+            objectt=objectt[1].voted_id.split()
+            context.update({
+            'choice_list': json.dumps(k11),
+            'voted_list':objectt,
+            
+        })   
+        else:    
+            context.update({
             'choice_list': json.dumps(k11),
             
+            
         })
+        
+        
         return context    
     def get_queryset(self):
         return BookInstance.objects.filter(status__exact='o').order_by('due_back')
@@ -126,7 +140,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 import datetime
 from django.contrib.auth.decorators import permission_required
-
+from django.contrib.contenttypes.models import ContentType
 # from .forms import RenewBookForm
 from catalog.forms import RenewBookForm
 
@@ -167,11 +181,13 @@ def renew_book_librarian(request, pk):
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Author
+from django.contrib.contenttypes.models import ContentType
+from django.utils.encoding import force_text
 
 
 class AuthorCreate(PermissionRequiredMixin, CreateView):
     model = Author
-    fields = {'privet':'first_name','last_name','bb'}
+    fields = {'first_card','second_card','bb'}
     initial = {'date_of_death': '05/01/2018'}
     permission_required = 'catalog.can_mark_returned'
 
@@ -183,9 +199,12 @@ class AuthorUpdate(PermissionRequiredMixin, UpdateView):
 
 
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
+    global voted_list
+    voted_list = []
     model = Author
     success_url = reverse_lazy('catalog:authors')
     permission_required = 'catalog.can_mark_returned'
+
 
 
 # Classes created for the forms challenge
@@ -208,22 +227,38 @@ class BookDelete(PermissionRequiredMixin, DeleteView):
 
 
 def vote(request, author_id):
-    print("HAI")
+    
     author = get_object_or_404(Author, pk=author_id)
-    print(author)
+    a= LogEntry.objects.log_action(
+    user_id         = request.user.pk, 
+    content_type_id = ContentType.objects.get_for_model(Option).pk,
+    object_id       = Option.pk,
+    object_repr     = force_text(Option), 
+    action_flag     = CHANGE
+)
+    
+    
     try:
         selected_choice = author.option_set.get(pk=request.POST['choice'])
         
-        print(selected_choice)
+        
     except (KeyError, Option.DoesNotExist):
         # Redisplay the question voting form.
         print("dsadsa")
     else:
-        print("DSADSA")
-        selected_choice.votes += 1
+        if author.voted_id == "zero":
+            author.voted_id = str(User.objects.get(pk=a.user_id))+" "
+        else:
+            author.voted_id += str(User.objects.get(pk=a.user_id))+" "
+
+        author.save(update_fields=["voted_id"]) 
+        print(author.voted_id)
+        selected_choice.votes = F("votes") + 1
         selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('catalog:index'))
-        
+
+
+

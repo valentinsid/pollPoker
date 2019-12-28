@@ -27,12 +27,8 @@ class AuthorAdmin(admin.ModelAdmin):
        grouping the date fields horizontally
      - adds inline addition of books in author view (inlines)
     """
-    list_display = ('last_name',
-                    'first_name','bb')
-    fields = ['first_name', 'last_name', 'bb']
-
-
-
-
+    list_display = ('first_card',
+                    'second_card','bb')
+    fields = ['first_card', 'second_card', 'bb']
 
 

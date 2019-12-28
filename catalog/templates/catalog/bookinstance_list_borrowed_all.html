@@ -5,30 +5,41 @@
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 var djangoData = JSON.parse('{{ choice_list | safe }}');
+
 console.log(djangoData,djangoData[0]);
+
+  window.setTimeout(function () {
+    location.href = "{% url 'catalog:all-borrowed' %}";
+}, 5000); 
 var kkk = new Array(9);
 kkk[0]=["info1","info2"];
 for (var i = 1; i< kkk.length; i++){
   kkk[i]=[djangoData[i-1][0],parseInt(djangoData[i-1][1])];
 }
 console.log(kkk);
-
       function drawChart() {
-
         var data = google.visualization.arrayToDataTable(kkk);
-
         var options = {
-          title: 'My Daily Activities'
+          title: 'Results'
         };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
+         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
         chart.draw(data, options);
       }
     </script>
   </head>
   <body>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
+    <div>
+    {% if voted_list %}
+<ul>
+    {% for i in voted_list %}
+   <li> {{ i }}</li>
+   {% endfor %}
+  </ul>
+  {% else %}
+  <p>No users have voted or game has not started yet</p>
+  {% endif %}
+</div>
   </body>
 </html>
 

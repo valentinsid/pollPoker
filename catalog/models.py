@@ -104,14 +104,15 @@ class BookInstance(models.Model):
 class Author(models.Model):
 	"""Model representing an author."""
 
-	first_name = models.CharField(max_length=100)
-	last_name = models.CharField(max_length=100)
+	first_card = models.CharField(max_length=100)
+	second_card = models.CharField(max_length=100)
 	date_of_birth = models.DateField(null=True, blank=True)
 	date_of_death = models.DateField('died', null=True, blank=True)
 	bb = models.IntegerField(default=0)
+	voted_id = models.CharField(max_length=1000,default="zero")
 
 	class Meta:
-		ordering = ['last_name', 'first_name']
+		ordering = ['first_card', 'second_card']
 
 	def get_absolute_url(self):
 		"""Returns the url to access a particular author instance."""
@@ -119,7 +120,7 @@ class Author(models.Model):
 
 	def __str__(self):
 		"""String for representing the Model object."""
-		return '{0}, {1}'.format(self.last_name, self.first_name)
+		return '{0}, {1}'.format(self.first_card, self.second_card)
 
 
 
@@ -128,13 +129,18 @@ class Author(models.Model):
 		print('SAVED')
 
 		Option.objects.all().update(author_id=self.id)
-		Option.objects.all().update(votes=0)
+		if Author.objects.get(pk=self.id):
+			print("HAI")
+		else:
+			print("dsadsa")
+			Option.objects.all().update(votes=0)
 
 
 
 	def delete(self, *args, **kwargs):
 		Option.objects.filter(author_id=self.id).update(author_id=None, votes=0)
-		super().delete(*args, **kwargs)    
+		super().delete(*args, **kwargs)
+		   
 
 
 
@@ -152,7 +158,7 @@ class Option(models.Model):
 	
 	choice_text = models.CharField(max_length=200)
 	votes = models.IntegerField(default=0)
-
+	
 	def __str__(self):
 		return self.choice_text
 
