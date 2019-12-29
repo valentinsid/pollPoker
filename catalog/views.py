@@ -5,7 +5,7 @@ from django.db.models import F
 from .models import Book, Author, BookInstance, Genre, Option
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 from django.contrib.auth.models import User
-
+from django.core.exceptions import ObjectDoesNotExist
 def index(request):
     """View function for home page of site."""
     # Generate counts of some of the main objects
@@ -58,8 +58,8 @@ class AuthorDetailView(generic.DetailView):
     try:
 	    field_object = model._meta.get_field(field_name)
 	    field_value = field_object.value_from_object(obj)
-    except AttributeError:
-    	pass
+    except AttributeError or self.DoesNotExist:
+    	render(request, 'catalog:index') 
     
     def get_context_data(self, **kwargs):
         context = super(AuthorDetailView, self).get_context_data(**kwargs)
@@ -103,6 +103,8 @@ class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(LoanedBooksAllListView, self).get_context_data(**kwargs)
         new_list=list(Option.objects.all())
+        new_list2=list(Author.objects.all())
+        
         k1=[]
         k11=[]
         #new_list_vote = list(Option.objects.all().votes)
@@ -120,6 +122,7 @@ class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
             context.update({
             'choice_list': json.dumps(k11),
             'voted_list':objectt,
+            'author_list':new_list2,
             
         })   
         else:    
@@ -133,6 +136,13 @@ class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
         return context    
     def get_queryset(self):
         return BookInstance.objects.filter(status__exact='o').order_by('due_back')
+    def post(self, request, **kwargs):     
+        a=kwargs['pk']
+        print(a)
+        print(request)
+        print("UPDATE_VOTES POST")
+        update_votes(request, a)
+        return render(request, 'updated.html')      
 
 #---------------------------------------------------------------------------------------------
 from django.shortcuts import get_object_or_404
@@ -187,20 +197,21 @@ from django.utils.encoding import force_text
 
 class AuthorCreate(PermissionRequiredMixin, CreateView):
     model = Author
-    fields = {'first_card','second_card','bb'}
+    fields = {'card','bb'}
     initial = {'date_of_death': '05/01/2018'}
     permission_required = 'catalog.can_mark_returned'
 
 
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
     model = Author
-    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
+    fields = {'card','bb'}
+    success_url = reverse_lazy('catalog:authors')
     permission_required = 'catalog.can_mark_returned'
 
 
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
-    global voted_list
-    voted_list = []
+    
+    
     model = Author
     success_url = reverse_lazy('catalog:authors')
     permission_required = 'catalog.can_mark_returned'
@@ -260,5 +271,33 @@ def vote(request, author_id):
         # user hits the Back button.
         return HttpResponseRedirect(reverse('catalog:index'))
 
+def update_votes(request,*args, **kwargs):
+    print("UPDATE_VOTES FUNK")
+    print(request,kwargs)
+    author = get_object_or_404(Author, pk=kwargs['pk'])
+    author.voted_id="zero"
+    author.save(update_fields=["voted_id"])
+    print(author)
+    print("UPDATE_VOTES FUNK 2")
+    Option.objects.all().update(votes=0)
+    return HttpResponseRedirect(reverse('catalog:index'))        
 
 
+
+
+from django.shortcuts import render
+
+from django.template import Context, loader
+
+
+##
+# Handle 404 Errors
+# @param request WSGIRequest list with all HTTP Request
+def error404(request,exception=None):
+
+    # 1. Load models for this view
+    #from idgsupply.models import My404Method
+
+    # 2. Generate Content for this view
+    
+    return redirect('catalog:index')

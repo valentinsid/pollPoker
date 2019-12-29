@@ -1,10 +1,11 @@
 from django.urls import path
-
+from django.conf.urls import handler404
 from . import views
-
+handler404 = views.error404 
 app_name = 'catalog'
 urlpatterns = [
 path('author/<int:pk>/vote/',views.vote,name='vote'),
+path('author/<int:pk>/updvote/',views.update_votes,name='update_votes'),
    path('author/<int:pk>/',
          views.AuthorDetailView.as_view(), name='author-detail'),
    

@@ -104,7 +104,7 @@ class BookInstance(models.Model):
 class Author(models.Model):
 	"""Model representing an author."""
 
-	first_card = models.CharField(max_length=100)
+	card = models.CharField(max_length=100)
 	second_card = models.CharField(max_length=100)
 	date_of_birth = models.DateField(null=True, blank=True)
 	date_of_death = models.DateField('died', null=True, blank=True)
@@ -112,7 +112,7 @@ class Author(models.Model):
 	voted_id = models.CharField(max_length=1000,default="zero")
 
 	class Meta:
-		ordering = ['first_card', 'second_card']
+		ordering = ['card']
 
 	def get_absolute_url(self):
 		"""Returns the url to access a particular author instance."""
@@ -120,7 +120,7 @@ class Author(models.Model):
 
 	def __str__(self):
 		"""String for representing the Model object."""
-		return '{0}, {1}'.format(self.first_card, self.second_card)
+		return '{0}'.format(self.card)
 
 
 

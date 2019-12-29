@@ -3,10 +3,11 @@
 {% block content %}
 {% load staticfiles %}
 {% load mathfilters %}
+
 <h1>Card: {{ author }} - {{ author.bb }} </h1>
-<img src="{% static 'images/'%}{{author.first_card}}.jpg" alt="Smiley face" height="300" width="200">
-<img src="{% static 'images/'%}{{author.second_card}}.jpg" alt="Smiley face" height="300" width="200">
-<p>{{author.date_of_birth}} - {% if author.date_of_death %}{{author.date_of_death}}{% endif %}</p>
+<img src="{% static 'images/'%}{{author.card |slice:"0:2" }}.jpg" alt="Smiley face" height="300" width="200">
+<img src="{% static 'images/'%}{{author.card |slice:"2:4" }}.jpg" alt="Smiley face" height="300" width="200">
+
 
 <div style="margin-left:20px;margin-top:20px">
 <form action="{% url 'catalog:author-detail' author.id %}" method="post">

@@ -11,13 +11,13 @@
 
   
     
-      <a href="{{ author_list.1.get_absolute_url }}">
-      {{ author_list.1 }} - {{ author_list.1.bb }}
-      </a>
+    <meta http-equiv="REFRESH" content="0;url={{ author_list.1.get_absolute_url }}">
+
+ 
    
 
 {% endif %}
-{% if author_list|length == 1 and author_list.0.first_card == "0" and author_list.0.second_card == "0" and author_list.0.bb == 0 %}
+{% if author_list|length == 1 and author_list.0.card == "0" and author_list.0.bb == 0 %}
 
 <p>Загрузка карт....</p>
 <img src="{% static 'images/'%}back.jpg" alt="Smiley face" height="300" width="200">
@@ -49,7 +49,7 @@
 }, 5000); // refresh/redirect after 5 seconds.
 </script>
   <p>В данный момент нет активной сессии</p>
-  <p>Для того, чтобы начать игру, зайдите в 'Enter cards' и создайте карту с полями '0','0','0' </p>
+  <p>Для того, чтобы начать игру, зайдите в 'Enter cards' и создайте карту с полями '0','0' </p>
   <p>После окончания игры не забудьте нажать 'End game'</p>
 
 {% endif %}
