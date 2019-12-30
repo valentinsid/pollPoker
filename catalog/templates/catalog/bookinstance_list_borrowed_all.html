@@ -29,12 +29,14 @@ console.log(kkk);
   </head>
   <body>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
+    {% if author_list.1 %}
     <form action="{% url 'catalog:update_votes' author_list.1.id %}" method="post">
 {% csrf_token %} 
 
 <br>
 <input type="submit" value="New step">
 </form>
+{% endif %}
     <div>
     {% if voted_list %}
 <ul>

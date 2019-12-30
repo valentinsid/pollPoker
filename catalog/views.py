@@ -58,8 +58,8 @@ class AuthorDetailView(generic.DetailView):
     try:
 	    field_object = model._meta.get_field(field_name)
 	    field_value = field_object.value_from_object(obj)
-    except AttributeError or self.DoesNotExist:
-    	render(request, 'catalog:index') 
+    except AttributeError:
+    	pass
     
     def get_context_data(self, **kwargs):
         context = super(AuthorDetailView, self).get_context_data(**kwargs)
