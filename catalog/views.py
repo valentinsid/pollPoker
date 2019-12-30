@@ -201,7 +201,6 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
     initial = {'date_of_death': '05/01/2018'}
     permission_required = 'catalog.can_mark_returned'
 
-
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
     model = Author
     fields = {'card','bb'}
@@ -209,11 +208,29 @@ class AuthorUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'catalog.can_mark_returned'
 
 
+class StartGame(PermissionRequiredMixin, CreateView):
+    model = Author
+    
+    fields = {'date_of_death'}
+
+    permission_required = 'catalog.can_mark_returned'
+    def get_initial(self):
+        # Get the initial dictionary from the superclass method
+        initial = super(StartGame, self).get_initial()
+        # Copy the dictionary so we don't accidentally change a mutable dict
+        initial = initial.copy()
+        initial['card'] = '0'
+        print(initial)
+        initial['bb'] = '0'
+        print(initial)
+        return initial
+
+
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
     
     
     model = Author
-    success_url = reverse_lazy('catalog:authors')
+    success_url = reverse_lazy('catalog:author_create')
     permission_required = 'catalog.can_mark_returned'
 
 

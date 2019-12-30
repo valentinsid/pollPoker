@@ -104,7 +104,7 @@ class BookInstance(models.Model):
 class Author(models.Model):
 	"""Model representing an author."""
 
-	card = models.CharField(max_length=100)
+	card = models.CharField(max_length=100,default="0")
 	second_card = models.CharField(max_length=100)
 	date_of_birth = models.DateField(null=True, blank=True)
 	date_of_death = models.DateField('died', null=True, blank=True)

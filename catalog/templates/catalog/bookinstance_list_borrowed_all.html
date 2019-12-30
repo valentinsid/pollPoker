@@ -10,7 +10,7 @@ console.log(djangoData,djangoData[0]);
 
   window.setTimeout(function () {
     location.href = "{% url 'catalog:all-borrowed' %}";
-}, 5000); 
+}, 100); 
 var kkk = new Array(9);
 kkk[0]=["info1","info2"];
 for (var i = 1; i< kkk.length; i++){
@@ -30,7 +30,7 @@ console.log(kkk);
   <body>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
     {% if author_list.1 %}
-    <form action="{% url 'catalog:update_votes' author_list.1.id %}" method="post">
+    <form action="{% url 'catalog:author_delete' author_list.1.id %}" method="post">
 {% csrf_token %} 
 
 <br>

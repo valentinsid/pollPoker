@@ -48,11 +48,18 @@
     location.href = "{% url 'catalog:authors' %}";
 }, 5000); // refresh/redirect after 5 seconds.
 </script>
-  <p>В данный момент нет активной сессии</p>
-  <p>Для того, чтобы начать игру, зайдите в 'Enter cards' и создайте карту с полями '0','0' </p>
-  <p>После окончания игры не забудьте нажать 'End game'</p>
+{% if user.is_staff %}
+<form action="{% url 'catalog:start_game' %}" method="post">
+{% csrf_token %} 
+
+<br>
+<input type="submit" value="Start game">
+</form>
 
 {% endif %}
+{% endif %}
+
+
         
         
         
