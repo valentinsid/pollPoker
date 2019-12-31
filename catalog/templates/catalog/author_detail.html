@@ -13,7 +13,6 @@
 </script>
 
 {% endif %}
-
 <img src="{% static 'images/'%}{{author.card |slice:"0:2" |upper }}.jpg" alt="Smiley face" height="300" width="200">
 <img src="{% static 'images/'%}{{author.card |slice:"2:4" |upper }}.jpg" alt="Smiley face" height="300" width="200">
 {% if not user.is_staff %}
@@ -28,10 +27,6 @@
 </script>
 
 {% endif %}
-
-<img src="{% static 'images/'%}{{author.card |slice:"0:2" |upper}}.jpg" alt="Smiley face" height="300" width="200">
-<img src="{% static 'images/'%}{{author.card |slice:"2:4" |upper}}.jpg" alt="Smiley face" height="300" width="200">
-
 
 
 <div style="margin-left:20px;margin-top:20px">
