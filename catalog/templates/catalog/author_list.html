@@ -11,6 +11,7 @@
 
   
     <p>Ожидайте перехода на актуальную карту</p>
+
     <script type="text/javascript">
 	window.setTimeout(function () {
     location.href = "{% url 'catalog:authors' %}";
@@ -18,6 +19,10 @@
 </script>
 {% if author_list|length != 1 %}
     <meta http-equiv="REFRESH" content="0;url={{ author_list.1.get_absolute_url }}">
+
+    <meta http-equiv="REFRESH" content="10;url={{ author_list.1.get_absolute_url }}">
+
+
 
 
 {% endif %}
@@ -57,12 +62,22 @@
 <form action="{% url 'catalog:start_game' %}" method="post">
 {% csrf_token %} 
 
+
+<br>
+<input type="submit" value="Start game">
+</form>
+
+
+
 <br>
 <input type="submit" value="Start game">
 </form>
 
 {% endif %}
 {% endif %}
+
+{% endif %}
+
 
 
         
