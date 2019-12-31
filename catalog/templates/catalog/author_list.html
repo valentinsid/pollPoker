@@ -10,12 +10,17 @@
 {% if author_list|length != 1 %}
 
   
-    
+    <p>Ожидайте перехода на актуальную карту</p>
+    <script type="text/javascript">
+	window.setTimeout(function () {
+    location.href = "{% url 'catalog:authors' %}";
+}, 5000); // refresh/redirect after 5 seconds.
+</script>
+{% if author_list|length != 1 %}
     <meta http-equiv="REFRESH" content="0;url={{ author_list.1.get_absolute_url }}">
 
- 
-   
 
+{% endif %}
 {% endif %}
 {% if author_list|length == 1 and author_list.0.card == "0" and author_list.0.bb == 0 %}
 
@@ -48,11 +53,18 @@
     location.href = "{% url 'catalog:authors' %}";
 }, 5000); // refresh/redirect after 5 seconds.
 </script>
-  <p>В данный момент нет активной сессии</p>
-  <p>Для того, чтобы начать игру, зайдите в 'Enter cards' и создайте карту с полями '0','0' </p>
-  <p>После окончания игры не забудьте нажать 'End game'</p>
+{% if user.is_staff %}
+<form action="{% url 'catalog:start_game' %}" method="post">
+{% csrf_token %} 
+
+<br>
+<input type="submit" value="Start game">
+</form>
 
 {% endif %}
+{% endif %}
+
+
         
         
         

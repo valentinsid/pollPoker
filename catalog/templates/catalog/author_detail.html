@@ -5,8 +5,28 @@
 {% load mathfilters %}
 
 <h1>Card: {{ author }} - {{ author.bb }} </h1>
-<img src="{% static 'images/'%}{{author.card |slice:"0:2" }}.jpg" alt="Smiley face" height="300" width="200">
-<img src="{% static 'images/'%}{{author.card |slice:"2:4" }}.jpg" alt="Smiley face" height="300" width="200">
+{% if author.card == "0" %}
+<script type="text/javascript">
+	window.setTimeout(function () {
+    location.href = "{% url 'catalog:index' %}";
+}, 100); 
+</script>
+
+{% endif %}
+<img src="{% static 'images/'%}{{author.card |slice:"0:2" |upper }}.jpg" alt="Smiley face" height="300" width="200">
+<img src="{% static 'images/'%}{{author.card |slice:"2:4" |upper }}.jpg" alt="Smiley face" height="300" width="200">
+{% if not user.is_staff %}
+    <script type="text/javascript">
+	window.setTimeout(function () {
+	if ("{{ author_list.1 }}" !== null) {
+
+  location.href = "{% url 'catalog:authors' %}"; // любое значение, кроме 2015
+}	
+    }
+, 5000); // refresh/redirect after 5 seconds.
+</script>
+
+{% endif %}
 
 
 <div style="margin-left:20px;margin-top:20px">

@@ -72,7 +72,7 @@ class AuthorDetailView(generic.DetailView):
         a=kwargs['pk']
         print(request)
         vote(request, a)
-        return render(request, 'voted.html')    
+        return render(request, 'catalog/author_list.html')    
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -153,7 +153,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.contenttypes.models import ContentType
 # from .forms import RenewBookForm
 from catalog.forms import RenewBookForm
-
+from django.shortcuts import redirect
 
 @permission_required('catalog.can_mark_returned')
 def renew_book_librarian(request, pk):
@@ -201,7 +201,6 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
     initial = {'date_of_death': '05/01/2018'}
     permission_required = 'catalog.can_mark_returned'
 
-
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
     model = Author
     fields = {'card','bb'}
@@ -209,11 +208,29 @@ class AuthorUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'catalog.can_mark_returned'
 
 
+class StartGame(PermissionRequiredMixin, CreateView):
+    model = Author
+    
+    fields = {'date_of_death'}
+
+    permission_required = 'catalog.can_mark_returned'
+    def get_initial(self):
+        # Get the initial dictionary from the superclass method
+        initial = super(StartGame, self).get_initial()
+        # Copy the dictionary so we don't accidentally change a mutable dict
+        initial = initial.copy()
+        initial['card'] = '0'
+        print(initial)
+        initial['bb'] = '0'
+        print(initial)
+        return initial
+
+
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
     
     
     model = Author
-    success_url = reverse_lazy('catalog:authors')
+    success_url = reverse_lazy('catalog:author_create')
     permission_required = 'catalog.can_mark_returned'
 
 
@@ -235,11 +252,19 @@ class BookDelete(PermissionRequiredMixin, DeleteView):
     model = Book
     success_url = reverse_lazy('books')
     permission_required = 'catalog.can_mark_returned'
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
+
+def votefail(request):
+    return redirect('catalog/votefailed.html')   
 
 
 def vote(request, author_id):
-    
-    author = get_object_or_404(Author, pk=author_id)
+    try:
+        author = Author.objects.all().get(pk=author_id)
+    except ObjectDoesNotExist:
+        
+        return HttpResponseRedirect(reverse('catalog:votefailed'))    
     a= LogEntry.objects.log_action(
     user_id         = request.user.pk, 
     content_type_id = ContentType.objects.get_for_model(Option).pk,
@@ -269,6 +294,7 @@ def vote(request, author_id):
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
+        print("redirect2")
         return HttpResponseRedirect(reverse('catalog:index'))
 
 def update_votes(request,*args, **kwargs):
