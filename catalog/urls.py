@@ -5,6 +5,7 @@ handler404 = views.error404
 app_name = 'catalog'
 urlpatterns = [
 path('author/<int:pk>/vote/',views.vote,name='vote'),
+path('votefailed/',views.votefail,name='votefailed'),
 path('author/<int:pk>/updvote/',views.update_votes,name='update_votes'),
    path('author/<int:pk>/',
          views.AuthorDetailView.as_view(), name='author-detail'),
@@ -35,6 +36,7 @@ urlpatterns += [
     path('author/create/', views.AuthorCreate.as_view(), name='author_create'),
     path('author/<int:pk>/update/', views.AuthorUpdate.as_view(), name='author_update'),
     path('author/<int:pk>/delete/', views.AuthorDelete.as_view(), name='author_delete'),
+    path('author/startgame/', views.StartGame.as_view(), name='start_game'),
 ]
 
 # Add URLConf to create, update, and delete books
