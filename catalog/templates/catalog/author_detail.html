@@ -5,6 +5,14 @@
 {% load mathfilters %}
 
 <h1>Card: {{ author }} - {{ author.bb }} </h1>
+{% if author.card == "0" %}
+<script type="text/javascript">
+	window.setTimeout(function () {
+    location.href = "{% url 'catalog:index' %}";
+}, 100); 
+</script>
+
+{% endif %}
 <img src="{% static 'images/'%}{{author.card |slice:"0:2" }}.jpg" alt="Smiley face" height="300" width="200">
 <img src="{% static 'images/'%}{{author.card |slice:"2:4" }}.jpg" alt="Smiley face" height="300" width="200">
 
