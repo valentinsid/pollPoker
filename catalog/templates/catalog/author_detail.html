@@ -29,8 +29,8 @@
 
 {% endif %}
 
-<img src="{% static 'images/'%}{{author.card |slice:"0:2" }}.jpg" alt="Smiley face" height="300" width="200">
-<img src="{% static 'images/'%}{{author.card |slice:"2:4" }}.jpg" alt="Smiley face" height="300" width="200">
+<img src="{% static 'images/'%}{{author.card |slice:"0:2" |upper}}.jpg" alt="Smiley face" height="300" width="200">
+<img src="{% static 'images/'%}{{author.card |slice:"2:4" |upper}}.jpg" alt="Smiley face" height="300" width="200">
 
 
 
