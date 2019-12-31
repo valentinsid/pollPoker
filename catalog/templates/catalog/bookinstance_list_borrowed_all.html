@@ -10,7 +10,7 @@ console.log(djangoData);
 
   window.setTimeout(function () {
     location.href = "{% url 'catalog:all-borrowed' %}";
-}, 5000); 
+}, 100); 
 var kkk = new Array(9);
 kkk[0]=["info1","info2"];
 for (var i = 1; i< kkk.length; i++){
@@ -33,9 +33,13 @@ console.log(kkk);
 
 
     {% if author_list.1 %}
+<<<<<<< HEAD
 
 
     <form action="{% url 'catalog:author_delete' author_list.1.id %}" target="_blank" method="post">
+=======
+    <form action="{% url 'catalog:author_delete' author_list.1.id %}" method="post">
+>>>>>>> 5e0acb59c94d90e3755c26997e376a90385874a1
 {% csrf_token %} 
 
 <br>
