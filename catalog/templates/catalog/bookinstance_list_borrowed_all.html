@@ -52,12 +52,20 @@ console.log(kkk);
     <div>
     {% if voted_list %}
 <ul>
-    {% for i in voted_list %}
+    {% for i in user_list %}
+    
+    {% if i not in voted_list %}
    <li> {{ i }}</li>
-   {% endfor %}
+    {% endif %}
+    {% endfor %}
+   
   </ul>
   {% else %}
-  <p>No users have voted or game has not started yet</p>
+  <ul>
+   {% for i in user_list %}
+   <li> {{ i }}</li>
+   {% endfor %}
+     </ul>
   {% endif %}
 </div>
   </body>

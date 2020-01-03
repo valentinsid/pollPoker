@@ -14,7 +14,7 @@
     <script type="text/javascript">
 	window.setTimeout(function () {
     location.href = "{% url 'catalog:authors' %}";
-}, 5000); // refresh/redirect after 5 seconds.
+}, 12000); // refresh/redirect after 5 seconds.
 </script>
 {% if author_list|length != 1 %}
     <meta http-equiv="REFRESH" content="0;url={{ author_list.1.get_absolute_url }}">
@@ -30,7 +30,7 @@
 <script type="text/javascript">
 	window.setTimeout(function () {
     location.href = "{% url 'catalog:authors' %}";
-}, 5000); // refresh/redirect after 5 seconds.
+}, 10000); // refresh/redirect after 5 seconds.
 </script>
 {% if user.is_staff %}
 <form action="{% url 'catalog:author_delete' author_list.0.id %}" method="post">
@@ -39,6 +39,16 @@
 <br>
 <input type="submit" value="End game">
 </form>
+<br>
+{% if user.is_staff %}
+<form action="{% url 'catalog:start_game' %}" method="post">
+{% csrf_token %}
+BigBlind: <input type="text" name="bigblind"><br>
+<br>
+<input type="submit" value="Save">
+</form>
+
+{% endif %}
 {% endif %}
 
 {% endif %}
@@ -51,14 +61,15 @@
 <script type="text/javascript">
 	window.setTimeout(function () {
     location.href = "{% url 'catalog:authors' %}";
-}, 5000); // refresh/redirect after 5 seconds.
+}, 10000); // refresh/redirect after 5 seconds.
 </script>
 {% if user.is_staff %}
 <form action="{% url 'catalog:start_game' %}" method="post">
-{% csrf_token %} 
-
+{% csrf_token %}
+Start game: <input type="checkbox" name="game_start"><br>
+BigBlind: <input type="text" name="bigblind" required><br>
 <br>
-<input type="submit" value="Start game">
+<input type="submit" value="Save">
 </form>
 
 {% endif %}
