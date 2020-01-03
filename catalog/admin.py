@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Author, Genre, Book, BookInstance, Language, Option
+from .models import Author, Genre, Book, BookInstance, Language, Option,BigBlind
 
 """Minimal registration of Models.
 admin.site.register(Book)
@@ -15,7 +15,7 @@ admin.site.register(Language)
 
 
 admin.site.register(Option)
-
+admin.site.register(BigBlind)
 
 
 @admin.register(Author)
