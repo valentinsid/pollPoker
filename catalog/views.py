@@ -255,6 +255,7 @@ class StartGame(PermissionRequiredMixin, CreateView):
 			ee.save()
 		if request.POST.get('game_start')!='on' and len(Author.objects.all())!=0:
 			Author.objects.all().delete()
+			BigBlind.objects.all().delete()
 
 		return HttpResponseRedirect(reverse('catalog:index')) 		
 		
