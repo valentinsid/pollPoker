@@ -101,14 +101,17 @@ class BookInstance(models.Model):
 		return '{0} ({1})'.format(self.id, self.book.title)
 
 
+class BigBlind(models.Model):
+	bb_sum=models.IntegerField(default=0) 
+
 class Author(models.Model):
 	"""Model representing an author."""
 
-	card = models.CharField(max_length=100,default="0")
+	card = models.CharField(max_length=100)
 	second_card = models.CharField(max_length=100)
 	date_of_birth = models.DateField(null=True, blank=True)
 	date_of_death = models.DateField('died', null=True, blank=True)
-	bb = models.IntegerField(default=0)
+	bb = models.IntegerField()
 	voted_id = models.CharField(max_length=1000,default="zero")
 
 	class Meta:
@@ -138,8 +141,11 @@ class Author(models.Model):
 
 
 	def delete(self, *args, **kwargs):
+
 		Option.objects.filter(author_id=self.id).update(author_id=None, votes=0)
 		super().delete(*args, **kwargs)
+		if len(Author.objects.all())==0:
+			BigBlind.objects.all().delete()
 		   
 
 
