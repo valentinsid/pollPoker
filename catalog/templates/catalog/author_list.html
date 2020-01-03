@@ -4,7 +4,6 @@
 {% load staticfiles %}
 <h1>Cards</h1>
 
-
 {% if author_list  %}
 
 {% if author_list|length != 1 %}
@@ -33,22 +32,16 @@
 }, 10000); // refresh/redirect after 5 seconds.
 </script>
 {% if user.is_staff %}
-<form action="{% url 'catalog:author_delete' author_list.0.id %}" method="post">
-{% csrf_token %} 
 
-<br>
-<input type="submit" value="End game">
-</form>
-<br>
-{% if user.is_staff %}
 <form action="{% url 'catalog:start_game' %}" method="post">
 {% csrf_token %}
-BigBlind: <input type="text" name="bigblind"><br>
+Start game: <input type="checkbox" name="game_start" {% if author_list.0.id %}checked{% endif %}><br>
+BigBlind: <input type="text" name="bigblind" value="{{ bb_value }}"><br>
 <br>
 <input type="submit" value="Save">
 </form>
 
-{% endif %}
+
 {% endif %}
 
 {% endif %}
@@ -67,7 +60,7 @@ BigBlind: <input type="text" name="bigblind"><br>
 <form action="{% url 'catalog:start_game' %}" method="post">
 {% csrf_token %}
 Start game: <input type="checkbox" name="game_start"><br>
-BigBlind: <input type="text" name="bigblind" required><br>
+BigBlind: <input type="text" name="bigblind" required value="{{ bb_value }}"><br>
 <br>
 <input type="submit" value="Save">
 </form>

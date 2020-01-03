@@ -48,6 +48,21 @@ class AuthorListView(generic.ListView):
 	model = Author
 
 
+	def get_context_data(self, **kwargs):
+		print("ghghghghj")
+		context = super(AuthorListView, self).get_context_data(**kwargs)
+		
+		try:
+			context.update({
+				"bb_value":BigBlind.objects.all().last().bb_sum
+			})
+		except AttributeError:	   
+			context.update({
+				"bb_value":"0"
+				
+			})
+		return context	
+
 
 class AuthorDetailView(generic.DetailView):
 	"""Generic class-based detail view for an author."""
@@ -231,20 +246,32 @@ class StartGame(PermissionRequiredMixin, CreateView):
 	permission_required = 'catalog.can_mark_returned'
 
 	def post(self, request, **kwargs):
-		try:
-			if request.POST['game_start']=='on' and len(Author.objects.all())==0:
-				ee=Author.objects.create(card='0',bb=0)
-				ee.save()
-			if request.POST.get('game_start')!='on' and len(Author.objects.all())!=0:
-				Author.objects.all().delete()
-		except KeyError or ValueError:
-			return HttpResponseRedirect(reverse('catalog:index')) 		
-		print(dir(request.POST.items()))	
-		if request.POST.get('bigblind')!='':	
-			bb_object = BigBlind.objects.create(bb_sum=request.POST.get('bigblind'))
-			bb_object.save()
-		return HttpResponseRedirect(reverse('catalog:index')) 
+		bb_object = BigBlind.objects.create(bb_sum=request.POST.get('bigblind'))
+		bb_object.save()
+		
+		print(request.POST.get('game_start'))
+		if request.POST.get('game_start')=='on' and len(Author.objects.all())==0:
+			ee=Author.objects.create(card='0',bb=0)
+			ee.save()
+		if request.POST.get('game_start')!='on' and len(Author.objects.all())!=0:
+			Author.objects.all().delete()
 
+		return HttpResponseRedirect(reverse('catalog:index')) 		
+		
+		
+		
+	def get_context_data(self, **kwargs):
+		context = super(StartGame, self).get_context_data(**kwargs)
+		if BigBlind.objects.all().last().bb_sum:
+			context.update({
+				"bb_value":BigBlind.objects.all().last().bb_sum
+			})
+		else:	   
+			context.update({
+				"bb_value":0
+				
+			})
+		return context	
 
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
 	
