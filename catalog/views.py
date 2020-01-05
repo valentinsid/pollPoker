@@ -85,7 +85,8 @@ class AuthorDetailView(generic.DetailView):
 		return context
 	def post(self, request, **kwargs):     
 		a=kwargs['pk']
-		print(request)
+		print('HAIDSADSA')
+		print(request.POST.keys(),a,kwargs)
 		vote(request, a)
 		return render(request, 'catalog/author_list.html')    
 
@@ -224,7 +225,7 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
 
 		ee=Author.objects.create(card=request.POST.get('card'),bb=BigBlind.objects.all().last().bb_sum)
 		ee.save()
-		return HttpResponseRedirect(reverse('catalog:index')) 
+		return HttpResponseRedirect(reverse('catalog:author_create')) 
 	
 	permission_required = 'catalog.can_mark_returned'
 	
@@ -275,11 +276,21 @@ class StartGame(PermissionRequiredMixin, CreateView):
 		return context	
 
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
-	
+	print("delete 1")
 	
 	model = Author
+	
 	success_url = reverse_lazy('catalog:author_create')
 	permission_required = 'catalog.can_mark_returned'
+	def post(self, request, **kwargs):
+		print(self,kwargs)
+		deleted_card = Author.objects.get(id=kwargs['pk'])
+		if deleted_card=='0':
+			deleted_card.delete()
+			return HttpResponseRedirect(reverse_lazy('catalog:index'))
+		else:
+			deleted_card.delete()
+			return HttpResponseRedirect(reverse_lazy('catalog:all-borrowed'))
 
 
 
@@ -311,6 +322,7 @@ def votefail(request):
 
 
 def vote(request, author_id):
+	
 	try:
 		author = Author.objects.all().get(pk=author_id)
 	except ObjectDoesNotExist:
@@ -326,12 +338,13 @@ def vote(request, author_id):
 	
 	
 	try:
-		selected_choice = author.option_set.get(pk=request.POST['choice'])
+		print(request.POST)
+		selected_choice = author.option_set.get(pk=request.POST['btn'])
 		
 		
 	except (KeyError, Option.DoesNotExist):
 		# Redisplay the question voting form.
-		print("dsadsa")
+		pass
 	else:
 		if author.voted_id == "zero":
 			author.voted_id = str(User.objects.get(pk=a.user_id))+" "
