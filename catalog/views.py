@@ -133,10 +133,10 @@ class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
 		for i in k1:
 			k11.append([str(i[0]),str(i[1])])  
 		objectt=Author.objects.all()   
-		print(new_list3)
+		print(len(new_list2))
 		if objectt.count() == 2:
 			objectt=objectt[1].voted_id.split()
-			print(objectt)
+			print(new_list2)
 			context.update({
 			'choice_list': json.dumps(k11),
 			'voted_list':objectt,
@@ -144,10 +144,11 @@ class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
 			'user_list':new_list3,
 			
 		})   
-		else:    
+		elif objectt.count() < 2:  
 			context.update({
 			'choice_list': json.dumps(k11),
 			'user_list':new_list3,
+			'author_list':new_list2,
 			
 		})
 		

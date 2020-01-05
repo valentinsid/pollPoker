@@ -50,6 +50,10 @@ console.log(kkk);
 
 
     <div>
+
+    {% if author_list|length == 0 %}
+    <p>Игра не началась</p>
+    {% else %}  
     {% if voted_list %}
 <ul>
     {% for i in user_list %}
@@ -66,6 +70,7 @@ console.log(kkk);
    <li> {{ i }}</li>
    {% endfor %}
      </ul>
+  {% endif %}
   {% endif %}
 </div>
   </body>
