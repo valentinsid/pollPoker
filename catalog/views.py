@@ -88,7 +88,7 @@ class AuthorDetailView(generic.DetailView):
 		print('HAIDSADSA')
 		print(request.POST.keys(),a,kwargs)
 		vote(request, a)
-		return render(request, 'catalog/author_list.html')    
+		return render(request, 'index.html')    
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -359,7 +359,7 @@ def vote(request, author_id):
 		# with POST data. This prevents data from being posted twice if a
 		# user hits the Back button.
 		print("redirect2")
-		return HttpResponseRedirect(reverse('catalog:index'))
+		return HttpResponseRedirect(reverse('catalog:author_create'))
 
 def update_votes(request,*args, **kwargs):
 	print("UPDATE_VOTES FUNK")
