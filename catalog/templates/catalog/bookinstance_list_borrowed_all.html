@@ -35,7 +35,7 @@ console.log(kkk);
     {% if author_list.1 %}
 
 
-    <form action="{% url 'catalog:author_delete' author_list.1.id %}" target="_blank" method="post">
+    <form action="{% url 'catalog:author_delete' author_list.1.id %}" method="post">
 {% csrf_token %} 
 
 <br>
@@ -50,8 +50,6 @@ console.log(kkk);
 
 
     <div>
-      <h1>Ждем голоса</h1>
-      <br>
     {% if voted_list %}
 <ul>
     {% for i in user_list %}

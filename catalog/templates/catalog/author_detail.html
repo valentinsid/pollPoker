@@ -33,28 +33,21 @@
 <form action="{% url 'catalog:author-detail' author.id %}" method="post">
 {% csrf_token %} 
   {% for choice in choice_list %}
+  
   {% if choice.choice_text == "MIN" %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }} - {{ author.bb | mul:2 }}</label><br>
+<button type="submit" name="btn" value="{{ choice.id }}">{{ choice.choice_text }} - {{ author.bb | mul:2 }}</button><br>
   {% elif choice.choice_text == "3BET" %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }} - {{ author.bb | mul:3 }}</label><br>
-  {% else %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+  <button type="submit" name="btn" value="{{ choice.id }}">{{ choice.choice_text }} - {{ author.bb | mul:3 }}</button><br>
 
+  {% else %}
+    
+  <button type="submit" name="btn" value="{{ choice.id }}">{{ choice.choice_text }}</button><br>
   {% endif %}  
 {% endfor %}
 
-<input type="submit" value="Vote">
+
 </form>
 
-{% if user.is_staff %}
-<form action="{% url 'catalog:author_delete' author.id %}" method="post">
-{% csrf_token %} 
-<input type="submit" value="Delete">
-</form>
-{% endif %}
 
 <dl>
 {% for book in author.book_set.all %}

@@ -4,24 +4,32 @@
 {% load staticfiles %}
 <h1>Cards</h1>
 
+
+
+
+
 {% if author_list  %}
 
 {% if author_list|length != 1 %}
-
-  
-    <p>Ожидайте перехода на актуальную карту</p>
+     <p>Ожидайте перехода на актуальную карту</p>
     <script type="text/javascript">
 	window.setTimeout(function () {
     location.href = "{% url 'catalog:authors' %}";
 }, 12000); // refresh/redirect after 5 seconds.
 </script>
+
 {% if author_list|length != 1 %}
     <meta http-equiv="REFRESH" content="0;url={{ author_list.1.get_absolute_url }}">
+{% endif %}
 
 
 {% endif %}
-{% endif %}
+
+
+
+
 {% if author_list|length == 1 and author_list.0.card == "0" and author_list.0.bb == 0 %}
+
 
 <p>Загрузка карт....</p>
 <img src="{% static 'images/'%}back.jpg" alt="Smiley face" height="300" width="200">
@@ -40,9 +48,8 @@ BigBlind: <input type="text" name="bigblind" value="{{ bb_value }}"><br>
 <br>
 <input type="submit" value="Save">
 </form>
-
-
 {% endif %}
+
 
 {% endif %}
 
@@ -51,11 +58,14 @@ BigBlind: <input type="text" name="bigblind" value="{{ bb_value }}"><br>
 
 
 {% else %}
+
 <script type="text/javascript">
 	window.setTimeout(function () {
     location.href = "{% url 'catalog:authors' %}";
 }, 10000); // refresh/redirect after 5 seconds.
 </script>
+
+
 {% if user.is_staff %}
 <form action="{% url 'catalog:start_game' %}" method="post">
 {% csrf_token %}
@@ -64,13 +74,19 @@ BigBlind: <input type="text" name="bigblind" required value="{{ bb_value }}"><br
 <br>
 <input type="submit" value="Save">
 </form>
-
-{% endif %}
 {% endif %}
 
+{% if not user.is_staff %}
+<p>В данный момент нет активной сессии</p>
+{% endif %}
 
-        
-        
-        
+
+
+
+
+
+{% endif %}
+ 
+       
 {% endblock %}
 
