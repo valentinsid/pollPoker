@@ -78,14 +78,18 @@ class AuthorDetailView(generic.DetailView):
 	
 	def get_context_data(self, **kwargs):
 		context = super(AuthorDetailView, self).get_context_data(**kwargs)
+		voted_users = context['author'].voted_id.split()
+		print(voted_users)
 		context.update({
 			'choice_list': Option.objects.all(),
+			'voted_users':voted_users,
 			
 		})
+
 		return context
 	def post(self, request, **kwargs):     
 		a=kwargs['pk']
-		print('HAIDSADSA')
+		
 		print(request.POST.keys(),a,kwargs)
 		vote(request, a)
 		return render(request, 'index.html')    
@@ -129,14 +133,14 @@ class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
 
 			k2=[i,i.votes]
 			k1.append(k2)
-
+		print(k1)	
 		for i in k1:
 			k11.append([str(i[0]),str(i[1])])  
 		objectt=Author.objects.all()   
 		print(len(new_list2))
 		if objectt.count() == 2:
 			objectt=objectt[1].voted_id.split()
-			print(new_list2)
+			print(k11)
 			context.update({
 			'choice_list': json.dumps(k11),
 			'voted_list':objectt,
@@ -371,7 +375,12 @@ def update_votes(request,*args, **kwargs):
 	print(author)
 	print("UPDATE_VOTES FUNK 2")
 	Option.objects.all().update(votes=0)
-	return HttpResponseRedirect(reverse('catalog:index'))        
+	return HttpResponseRedirect(reverse('catalog:index'))  
+
+
+def redir(request,*args, **kwargs):
+	
+	return HttpResponseRedirect(reverse('catalog:index'))   	      
 
 
 

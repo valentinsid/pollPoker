@@ -2,5 +2,113 @@
     margin-top: 20px;
     padding: 0;
     list-style: none;
+
+
 }
 
+a {
+    text-decoration: none !important;
+}
+
+.cont {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.container2 {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.voted-users p {
+    font-size: 20px;
+    margin: 0 0 0 5px;
+}
+
+.voted-users {
+    margin-left: 20px;
+}
+
+.images {
+    margin-left: 40px;
+    display: flex;
+}
+
+.butts {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-left: 40px;
+    font-family: 'Helvetica';
+}
+
+.butt {
+    width: 120px;
+    height: 50px;
+    font-size: 16px;
+    background-color: #252525;
+    color: #FFFFFF;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.butt:hover {
+    background-color: #ec7327;
+    border-radius: 3px;
+    border: 1px solid #ff8538;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
+}
+
+p {
+    font-size: 12px;
+    margin: 0 0 0 5px;
+}
+
+.line {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.col {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+}
+
+.downloads-cards {
+    margin: 0px;
+    width: auto;
+    padding-left: 20px: padding-right: 20px;
+    height: 50px;
+    font-size: 16px;
+    background-color: #cccccc;
+    color: #FFFFFF;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active-session {
+    margin: 0px;
+    width: 450px;
+    height: 50px;
+    font-size: 16px;
+    background-color: #154469;
+    color: #FFFFFF;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

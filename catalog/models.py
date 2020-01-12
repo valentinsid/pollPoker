@@ -152,15 +152,8 @@ class Author(models.Model):
 
 class Option(models.Model):
 	
-	def default_votes():
-		d=Author.objects.all().first()
-		
-		for a in d.option_set.all():
-			a.votes=0
-
-
-		return d
-	author = models.ForeignKey(Author, on_delete=models.SET_NULL, default=default_votes,null=True)
+	
+	author = models.ForeignKey(Author, on_delete=models.SET_NULL,null=True,blank=True)
 	
 	choice_text = models.CharField(max_length=200)
 	votes = models.IntegerField(default=0)

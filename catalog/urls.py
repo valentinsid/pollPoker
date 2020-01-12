@@ -7,6 +7,7 @@ urlpatterns = [
 path('author/<int:pk>/vote/',views.vote,name='vote'),
 path('votefailed/',views.votefail,name='votefailed'),
 path('author/<int:pk>/updvote/',views.update_votes,name='update_votes'),
+path('redir/',views.redir,name='redir'),
    path('author/<int:pk>/',
          views.AuthorDetailView.as_view(), name='author-detail'),
    
