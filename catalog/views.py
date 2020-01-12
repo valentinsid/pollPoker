@@ -234,6 +234,7 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
 	
 	permission_required = 'catalog.can_mark_returned'
 	
+	
 
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
 	model = Author
