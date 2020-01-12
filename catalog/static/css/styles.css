@@ -21,15 +21,28 @@ a {
     display: flex;
     align-items: flex-start;
     justify-content: space-around;
+    
 }
 
+.col-sm-10 img {
+    margin-top:20px;
+
+}
+
+.col-sm-10 {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
 .voted-users p {
     font-size: 20px;
     margin: 0 0 0 5px;
 }
 
 .voted-users {
-    margin-left: 20px;
+    flex-basis: 20%;
+    margin-top: 10%;
+    margin-right:10%;
 }
 
 .images {
@@ -45,7 +58,11 @@ a {
     margin-left: 40px;
     font-family: 'Helvetica';
 }
-
+#result {
+    margin-top: 10%;
+    margin-right:25%;
+    flex-basis: 10%;
+}
 .butt {
     width: 120px;
     height: 50px;

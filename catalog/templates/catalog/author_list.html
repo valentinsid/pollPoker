@@ -33,13 +33,15 @@ window.setTimeout(function() {
 }, 10000); // refresh/redirect after 5 seconds.
 </script>
 {% if user.is_staff %}
+<div>
 <form action="{% url 'catalog:start_game' %}" method="post">
     {% csrf_token %}
-    Start game: <input type="checkbox" name="game_start" {% if author_list.0.id %}checked{% endif %}><br>
-    BigBlind: <input type="text" name="bigblind" value="{{ bb_value }}"><br>
+    Игра: <input type="checkbox" name="game_start" {% if author_list.0.id %}checked{% endif %}><br>
+    BB: <input type="text" name="bigblind" value="{{ bb_value }}">
     <br>
-    <input type="submit" value="Save">
+    <input class="butt" type="submit" value="Сохранить">
 </form>
+</div>
 {% endif %}
 {% endif %}
 {% else %}
@@ -49,12 +51,12 @@ window.setTimeout(function() {
 }, 10000); // refresh/redirect after 5 seconds.
 </script>
 {% if user.is_staff %}
-<form action="{% url 'catalog:start_game' %}" method="post">
+<form class="start_form" action="{% url 'catalog:start_game' %}" method="post">
     {% csrf_token %}
-    Start game: <input type="checkbox" name="game_start"><br>
-    BigBlind: <input type="text" name="bigblind" required value="{{ bb_value }}"><br>
+    Игра: <input type="checkbox" name="game_start"><br>
+    BB: <input type="text" name="bigblind" required value="{{ bb_value }}">
     <br>
-    <input type="submit" value="Save">
+    <input class="butt" type="submit" value="Сохранить">
 </form>
 {% endif %}
 {% if not user.is_staff %}

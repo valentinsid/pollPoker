@@ -11,7 +11,7 @@
 
     window.setTimeout(function() {
         location.href = "{% url 'catalog:all-borrowed' %}";
-    }, 5000000);
+    }, 5000);
     var kkk = new Array(10);
     kkk[0] = ["info1", "info2"];
     for (var i = 1; i < kkk.length; i++) {
@@ -35,7 +35,7 @@
 <body>
     <div class="container2">
         <div id="piechart" style="width: 900px; height: 500px;"></div>
-        <div class="butts">
+        <div class="butts" id="result">
             <form action="{% url 'catalog:redir' %}" method="post">
                 {% csrf_token %}
                 <button class="butt" type="submit">
@@ -63,31 +63,33 @@
             </form>
             {% endif %}
         </div>
-    
-    
-    <div class="voted-users">
-        {% if author_list|length == 0 %}
-        <p>Игра не началась</p>
-        {% else %}
-        {% if voted_list %}
-        <p>Непроголосовавшие пользователи:</p>
-        <ul>
-            {% for i in user_list %}
-            {% if i not in voted_list %}
-            <p> {{ i }} <p>
-                    {% endif %}
-                    {% endfor %}
-        </ul>
-        {% else %}
-        <p>Непроголосовавшие пользователи</p>
-        <ul>
-            {% for i in user_list %}
-            <p> {{ i }} <p>
-                    {% endfor %}
-        </ul>
-        {% endif %}
-        {% endif %}
-    </div>
+        <div class="voted-users">
+            {% if author_list|length == 0 %}
+            <p>Игра не началась</p>
+            {% else %}
+            {% if voted_list %}
+            {% if voted_list != user_list %}
+            <p>Ждем голос...</p>
+            <ul>
+                {% for i in user_list %}
+                {% if i not in voted_list %}
+                <p> - {{ i }} <p>
+                        {% endif %}
+                        {% endfor %}
+            </ul>
+            {% else %}
+            <p> Все голоса </p>
+            {% endif %}
+            {% else %}
+            <p>Ждем голос...</p>
+            <ul>
+                {% for i in user_list %}
+                <p> - {{ i }} <p>
+                        {% endfor %}
+            </ul>
+            {% endif %}
+            {% endif %}
+        </div>
     </div>
 </body>
 

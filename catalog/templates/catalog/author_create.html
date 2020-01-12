@@ -1,11 +1,9 @@
-<html>
+{% extends "base_generic.html" %}
+{% block content %}
 <form action="." method="POST">
-
 {% csrf_token %}
-
 <table>
-
 </table>
-<button type="submit">SUBMIT</button>
+<button class="butt" type="submit">Сохранить</button>
 </form>
-</html>
+{% endblock %}

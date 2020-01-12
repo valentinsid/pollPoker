@@ -1,5 +1,12 @@
 {% extends "base_generic.html" %}
 {% block content %}
 {% load static %}
+{% if not user.is_staff and user.is_authenticated %}
+<script type="text/javascript">
+window.setTimeout(function() {
+        location.href = "{% url 'catalog:authors' %}";
+    }, 500);
+ </script>
+ {% endif %}
 <center><img src="{% static 'images/'%}Dota2.jpg" alt="Smiley face" width="200" height="200"></center>
 {% endblock %}
