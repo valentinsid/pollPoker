@@ -227,10 +227,12 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
 	
 	
 	def post(self, request, **kwargs):
-
-		ee=Author.objects.create(card=request.POST.get('card'),bb=BigBlind.objects.all().last().bb_sum)
+		try:
+			ee=Author.objects.create(card=request.POST.get('card'),bb=BigBlind.objects.all().last().bb_sum)
+		except AttributeError:
+			return HttpResponseRedirect(reverse('catalog:authors')) 
 		ee.save()
-		return HttpResponseRedirect(reverse('catalog:author_create')) 
+		return HttpResponseRedirect(reverse('catalog:authors')) 
 	
 	permission_required = 'catalog.can_mark_returned'
 	
