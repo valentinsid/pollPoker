@@ -1,78 +1,94 @@
 <html>
-  <head>
+
+<head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-var djangoData = JSON.parse('{{ choice_list | safe }}');
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+    var djangoData = JSON.parse('{{ choice_list | safe }}');
 
-console.log(djangoData);
+    console.log(djangoData);
 
-  window.setTimeout(function () {
-    location.href = "{% url 'catalog:all-borrowed' %}";
-}, 5000); 
-var kkk = new Array(9);
-kkk[0]=["info1","info2"];
-for (var i = 1; i< kkk.length; i++){
-  kkk[i]=[djangoData[i-1][0],parseInt(djangoData[i-1][1])];
-}
-console.log(kkk);
-      function drawChart() {
+    window.setTimeout(function() {
+        location.href = "{% url 'catalog:all-borrowed' %}";
+    }, 5000000);
+    var kkk = new Array(10);
+    kkk[0] = ["info1", "info2"];
+    for (var i = 1; i < kkk.length; i++) {
+        kkk[i] = [djangoData[i - 1][0], parseInt(djangoData[i - 1][1])];
+    }
+    console.log(kkk);
+
+    function drawChart() {
         var data = google.visualization.arrayToDataTable(kkk);
         var options = {
-          title: 'Results'
+            title: 'Результаты'
         };
-         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
         chart.draw(data, options);
-      }
+    }
     </script>
-  </head>
-  <body>
-    <div id="piechart" style="width: 900px; height: 500px;"></div>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
 
-
-
-    {% if author_list.1 %}
-
-
-    <form action="{% url 'catalog:author_delete' author_list.1.id %}" method="post">
-{% csrf_token %} 
-
-<br>
-<input type="submit" value="New step">
-</form>
-
-
-{% endif %}
-
-
-
-
-
-    <div>
-
-    {% if author_list|length == 0 %}
-    <p>Игра не началась</p>
-    {% else %}  
-    {% if voted_list %}
-<ul>
-    {% for i in user_list %}
+<body>
+    <div class="container2">
+        <div id="piechart" style="width: 900px; height: 500px;"></div>
+        <div class="butts">
+            <form action="{% url 'catalog:redir' %}" method="post">
+                {% csrf_token %}
+                <button class="butt" type="submit">
+                    <p>
+                        На главную
+                    </p>
+                </button>
+            </form>
+            {% if author_list.1 %}
+            <form action="{% url 'catalog:update_votes' author_list.1.id %}" method="post">
+                {% csrf_token %}
+                <button class="butt" type="submit">
+                    <p>
+                        Новый ход
+                    </p>
+                </button>
+            </form>
+            <form action="{% url 'catalog:author_delete' author_list.1.id %}" method="post">
+                {% csrf_token %}
+                <button class="butt" type="submit">
+                    <p>
+                        Новая раздача
+                    </p>
+                </button>
+            </form>
+            {% endif %}
+        </div>
     
-    {% if i not in voted_list %}
-   <li> {{ i }}</li>
-    {% endif %}
-    {% endfor %}
-   
-  </ul>
-  {% else %}
-  <ul>
-   {% for i in user_list %}
-   <li> {{ i }}</li>
-   {% endfor %}
-     </ul>
-  {% endif %}
-  {% endif %}
-</div>
-  </body>
-</html>
+    
+    <div class="voted-users">
+        {% if author_list|length == 0 %}
+        <p>Игра не началась</p>
+        {% else %}
+        {% if voted_list %}
+        <p>Непроголосовавшие пользователи:</p>
+        <ul>
+            {% for i in user_list %}
+            {% if i not in voted_list %}
+            <p> {{ i }} <p>
+                    {% endif %}
+                    {% endfor %}
+        </ul>
+        {% else %}
+        <p>Непроголосовавшие пользователи</p>
+        <ul>
+            {% for i in user_list %}
+            <p> {{ i }} <p>
+                    {% endfor %}
+        </ul>
+        {% endif %}
+        {% endif %}
+    </div>
+    </div>
+</body>
 
+</html>

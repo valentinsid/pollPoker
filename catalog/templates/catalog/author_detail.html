@@ -1,60 +1,121 @@
 {% extends "base_generic.html" %}
-
 {% block content %}
 {% load staticfiles %}
 {% load mathfilters %}
-
-<h1>Card: {{ author }} - {{ author.bb }} </h1>
+<!-- <h1>Card: {{ author }} - {{ author.bb }} </h1> -->
 {% if author.card == "0" %}
 <script type="text/javascript">
-	window.setTimeout(function () {
+window.setTimeout(function() {
     location.href = "{% url 'catalog:index' %}";
-}, 100); 
+}, 100);
 </script>
-
 {% endif %}
-<img src="{% static 'images/'%}{{author.card |slice:"0:2" |upper }}.jpg" alt="Smiley face" height="300" width="200">
-<img src="{% static 'images/'%}{{author.card |slice:"2:4" |upper }}.jpg" alt="Smiley face" height="300" width="200">
 {% if not user.is_staff %}
-    <script type="text/javascript">
-	window.setTimeout(function () {
-	if ("{{ author_list.1 }}" !== null) {
+<script type="text/javascript">
+window.setTimeout(function() {
+    if ("{{ author_list.1 }}" !== null) {
 
-  location.href = "{% url 'catalog:authors' %}"; // любое значение, кроме 2015
-}	
+        location.href = "{% url 'catalog:authors' %}"; // любое значение, кроме 2015
     }
-, 5000); // refresh/redirect after 5 seconds.
+}, 5000); // refresh/redirect after 5 seconds.
 </script>
-
 {% endif %}
-
-
-<div style="margin-left:20px;margin-top:20px">
-<form action="{% url 'catalog:author-detail' author.id %}" method="post">
-{% csrf_token %} 
-  {% for choice in choice_list %}
-  
-  {% if choice.choice_text == "MIN" %}
-<button type="submit" name="btn" value="{{ choice.id }}">{{ choice.choice_text }} - {{ author.bb | mul:2 }}</button><br>
-  {% elif choice.choice_text == "3BET" %}
-  <button type="submit" name="btn" value="{{ choice.id }}">{{ choice.choice_text }} - {{ author.bb | mul:3 }}</button><br>
-
-  {% else %}
-    
-  <button type="submit" name="btn" value="{{ choice.id }}">{{ choice.choice_text }}</button><br>
-  {% endif %}  
-{% endfor %}
-
-
-</form>
-
-
-<dl>
-{% for book in author.book_set.all %}
-  <dt><a href="{% url 'book-detail' book.pk %}">{{book}}</a> ({{book.bookinstance_set.all.count}})</dt>
-  <dd>{{book.summary}}</dd>
-{% endfor %}
-</dl>
-
+<div class="cont">
+    <div class="images">
+        <img src="{% static 'images/'%}{{author.card |slice:'0:2' |upper }}.jpg" alt="Smiley face" width="150" height="225">
+        <img src="{% static 'images/'%}{{author.card |slice:'2:4' |upper }}.jpg" alt="Smiley face" width="150" height="225">
+    </div>
+    <!-- WAIT FOR STEP  -->
+    {% if user.get_username in voted_users %}
+    <form class="butts">
+        <button class="downloads-cards" type="submit" name="btn">
+            <p>
+                Ожидаем следующий ход...
+            </p>
+        </button>
+    </form>
+    {% else %}
+    <!-- WAIT FOR STEP  -->
+    <!-- BUTTONS  -->
+    <div>
+        <form class="butts" action="{% url 'catalog:author-detail' author.id %}" method="post">
+            {% csrf_token %}
+            <div class="line one">
+                <div class="col">
+                    {% for choice in choice_list %}
+                    {% if choice.choice_text == "MIN" %}
+                    <button class="butt" type="submit" name="btn" value="{{ choice.id }}">
+                        {{ choice.choice_text }}
+                        <p>
+                            ({{ author.bb | mul:2 }})
+                        </p>
+                    </button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col">
+                    {% for choice in choice_list %}
+                    {% if choice.choice_text == "3BET" %}
+                    <button class="butt" type="submit" name="btn" value="{{ choice.id }}">
+                        {{ choice.choice_text }}
+                        <p>
+                            ({{ author.bb | mul:3 }})
+                        </p>
+                    </button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col">
+                    {% for choice in choice_list %}
+                    {% if choice.choice_text == "1/2" or choice.choice_text == "1/3" or choice.choice_text == "1/4" %}
+                    <button class="butt" type="submit" name="btn" value="{{ choice.id }}">
+                        {{ choice.choice_text }} BANK
+                    </button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col">
+                    {% for choice in choice_list %}
+                    {% if choice.choice_text == "BANK" %}
+                    <button class="butt" type="submit" name="btn" value="{{ choice.id }}">
+                        {{ choice.choice_text }}
+                    </button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col">
+                    {% for choice in choice_list %}
+                    {% if choice.choice_text == "ALL IN" %}
+                    <button class="butt" type="submit" name="btn" value="{{ choice.id }}">
+                        {{ choice.choice_text }}
+                    </button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="line two">
+                <div class="col">
+                    {% for choice in choice_list %}
+                    {% if choice.choice_text == "CHECK/FOLD" %}
+                    <button class="butt" type="submit" name="btn" value="{{ choice.id }}">
+                        {{ choice.choice_text }}
+                    </button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col">
+                    {% for choice in choice_list %}
+                    {% if choice.choice_text == "CALL" %}
+                    <button class="butt" type="submit" name="btn" value="{{ choice.id }}">
+                        {{ choice.choice_text }}
+                    </button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    <!-- BUTTONS  -->
 </div>
 {% endblock %}
