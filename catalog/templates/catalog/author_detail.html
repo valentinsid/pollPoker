@@ -22,8 +22,8 @@ window.setTimeout(function() {
 {% endif %}
 <div class="cont">
     <div class="images">
-        <img src="{% static 'images/'%}{{author.card |slice:'0:2' |upper }}.jpg" alt="Smiley face" width="150" height="225">
-        <img src="{% static 'images/'%}{{author.card |slice:'2:4' |upper }}.jpg" alt="Smiley face" width="150" height="225">
+        <img id = "card" src="{% static 'images/'%}{{author.card |slice:'0:2' |upper }}.jpg" alt="Smiley face" width="150" height="225">
+        <img id = "card" src="{% static 'images/'%}{{author.card |slice:'2:4' |upper }}.jpg" alt="Smiley face" width="150" height="225">
     </div>
     <!-- WAIT FOR STEP  -->
     {% if user.get_username in voted_users %}

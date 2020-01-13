@@ -41,7 +41,6 @@
    <hr />
    <ul class="sidebar-nav">
    {% if perms.catalog.can_mark_returned %}
-   <li><a href="{% url 'catalog:index' %}">Главная</a></li>
    <li><a href="{% url 'catalog:authors' %}">Опрос</a></li>
     <li><a href="{% url 'catalog:author_create' %}">Ввод карт</a></li>
    <li><a href="{% url 'catalog:all-borrowed' %}">Результаты</a></li>

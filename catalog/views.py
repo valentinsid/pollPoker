@@ -230,9 +230,9 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
 		try:
 			ee=Author.objects.create(card=request.POST.get('card'),bb=BigBlind.objects.all().last().bb_sum)
 		except AttributeError:
-			return HttpResponseRedirect(reverse('catalog:authors')) 
+			return HttpResponseRedirect(reverse('catalog:author_create')) 
 		ee.save()
-		return HttpResponseRedirect(reverse('catalog:authors')) 
+		return HttpResponseRedirect(reverse('catalog:author_create')) 
 	
 	permission_required = 'catalog.can_mark_returned'
 	
@@ -284,7 +284,7 @@ class StartGame(PermissionRequiredMixin, CreateView):
 		return context	
 
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
-	print("delete 1")
+	
 	
 	model = Author
 	

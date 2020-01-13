@@ -4,7 +4,7 @@
 <!--<h1>Cards</h1>-->
 {% if author_list %}
 {% if author_list|length != 1 %}
-<p>Ожидайте перехода на актуальную карту</p>
+<p>Загрузка...</p>
 <script type="text/javascript">
 window.setTimeout(function() {
     location.href = "{% url 'catalog:authors' %}";
