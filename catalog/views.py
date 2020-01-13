@@ -378,7 +378,7 @@ def update_votes(request,*args, **kwargs):
 	print(author)
 	print("UPDATE_VOTES FUNK 2")
 	Option.objects.all().update(votes=0)
-	return HttpResponseRedirect(reverse('catalog:index'))  
+	return HttpResponseRedirect(reverse('catalog:all-borrowed'))  
 
 
 def redir(request,*args, **kwargs):
