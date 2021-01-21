@@ -1,3 +1,1 @@
-Покерный опросник для сбора статистики о действиях, которое сделал бы игрок, если бы у него были определенные карты.
-Нужно было создать механизм голосования, показать результаты, обозначить начало и конец игры.
-Использовал: Django, SQlite, JS
+A poker questionnaire for collecting statistics about the actions a player would take if he had certain cards. It was necessary to create a voting mechanism, show the results, mark the beginning and end of the game. Used: Django, SQLite, JS
